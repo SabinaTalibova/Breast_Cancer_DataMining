@@ -1,6 +1,9 @@
 import pandas as pd 
+import matplotlib.pyplot as plt
 
 data=pd.read_csv('data_redwine.csv')
+
+
 print("list of column labes:")
 print(data.columns.tolist())
 print("\n")
@@ -77,24 +80,50 @@ print("Variance of ph column")
 print(data.pH.var())
 print("\n")
 
-print("Correlation between ph and alcohol of wine")
-print(data['pH'].corr(data['alcohol']))
-print("\n")
-
-print("Covariance between ph and alcohol of wine")
-print(data['pH'].cov(data['alcohol']))
-print("\n")
 
 
-print("Covariance between all attributes ")
-print(data.cov())
-print("\n")
+#find correlation between quality and all other columns
+columns=data.columns.tolist();
+def correlationwithquality():
+	for i in columns:
+		correlation =data[i].corr(data['quality'])
 
-print("Correlation between all attributes ")
-print(data.corr())
-print("\n")
+		if correlation>0.8:
+			print('there is strong correlation between  '+i +" and quality:"+ str(correlation)+"\n")
+		elif correlation<0.8 and correlation>0.4:
+			print('there is high correlation between  '+i +" and quality:"+ str(correlation)+"\n")
+		elif correlation<0.4 and correlation>0.2:
+			print('there is correlation between  '+i +" and quality:"+ str(correlation)+"\n")
+		elif correlation<0.2 and correlation>0:
+			print('there is not strong correlation between  '+i +" and quality:"+ str(correlation)+"\n")
+		elif correlation<0.1 or correlation==0:
+			print('there is not correlation between  '+i +" and quality:"+ str(correlation)+"\n")
+		elif correlation==-1:
+
+			print(i+' and quality has perfect negative correlation '+str(correlation)+ ' \n')
+		else:
+			print(not specified)
+		
+
+correlationwithquality()
+
+#histogram of density
+plt.hist(data['density'])
+plt.show()
 
 
 
 
+#scatter plot
+x=data['quality']
+y=data['residual sugar']
+
+fig=plt.scatter(x, y)
+plt.xlabel('Quality', fontsize=18)
+plt.ylabel('residual sugar', fontsize=16)
+plt.show()
+
+#box plot
+plt.boxplot(data['residual sugar'])
+plt.show()
 
